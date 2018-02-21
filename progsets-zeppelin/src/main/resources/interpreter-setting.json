@@ -1,0 +1,52 @@
+[
+  {
+    "group": "progsets",
+    "name": "progpsql",
+    "className": "io.progsets.zeppelin.PsqlInterpreter",
+    "properties": {
+      "progsets.url": {
+        "envName": "PROGSETS_URL",
+        "propertyName": "progsets.url",
+        "defaultValue": "http://localhost:8174/progsets",
+        "description": "The URL to progsets service",
+        "type": "string"
+      },
+      "progsets.auth": {
+        "envName": "PROGSETS_AUTH",
+        "propertyName": "progsets.auth",
+        "defaultValue": "Basic admin:admin",
+        "description": "The http authorization header value",
+        "type": "string"
+      }
+    },
+    "editor": {
+      "editOnDblClick": false,
+      "language" : "sql"
+    }
+  },
+  {
+    "group": "progsets",
+    "name": "progsaved",
+    "className": "io.progsets.zeppelin.SavedPsqlInterpreter",
+    "properties": {
+      "progsets.url": {
+        "envName": "PROGSETS_URL",
+        "propertyName": "progsets.url",
+        "defaultValue": "http://localhost:8174/progsets",
+        "description": "The URL to progsets service",
+        "type": "string"
+      },
+      "progsets.auth": {
+        "envName": "PROGSETS_AUTH",
+        "propertyName": "progsets.auth",
+        "defaultValue": "Basic admin:admin",
+        "description": "The http authorization header value",
+        "type": "string"
+      }
+    },
+    "editor": {
+      "editOnDblClick": false,
+      "language" : "sql"
+    }
+  }
+]

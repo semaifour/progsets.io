@@ -1,18 +1,18 @@
 # README #
 
- Procsets is distributed data processing platform for querying heterogeneous datasets.  
+ Progsets is distributed data processing platform for querying heterogeneous datasets.  
 
 ## Quick summary
 Repository consists of three maven projects namely 
-* procsets-common  -- common libraries
-* procesets-spark  -- apache spark based input/output/transform procedures
-* procsets-psql    -- spring boot based REST service to submit 'PSQL'/'PLPSQL' statements. 
+* progsets-common  -- common libraries
+* progesets-spark  -- apache spark based input/output/transform procedures
+* progsets-psql    -- spring boot based REST service to submit 'PSQL'/'PLPSQL' statements. 
 ## Version
 *  0.0.1 - matsya the fish
 
 ### How do I get set up? ###
 
-## Checkout the repository procsets-parent
+## Checkout the repository progsets-parent
 *	$git clone http://bitbucket.org/...
 *	$git fetch && git checkout master 
 
@@ -21,8 +21,8 @@ Repository consists of three maven projects namely
 *	2. JDK 1.8	
 
 ## Build & Deployment instructions
-*	1. Import all maven modules and build them independently (procsets-common, procsets-spark, procsets-psql)
-*	2. Run 'procesets-psql-xxx.jar' as Spring Boot Application
+*	1. Import all maven modules and build them independently (progsets-common, progsets-spark, progsets-psql)
+*	2. Run 'progsets-psql-xxx.jar' as Spring Boot Application
 *	2. Example: java -jar procesets-psql-xxx.jar
 
 ## How to run & test?
