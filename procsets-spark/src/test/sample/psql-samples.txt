@@ -1,0 +1,17 @@
+
+
+#
+#lateral view sample with json
+#
+revenue = mongo?mongodb.database=dgmdb&mongodb.collection=FinRevenueData
+result = ssql?sql=select quarter, biz.name as bizname, subbiz.name as subbizname, prodfam.* from revenue lateral view explode(businessEntity) as biz lateral view explode(biz.subBusinessEntity) as subbiz lateral view explode(subbiz.prodFamily) as prodfam where prodfam.revenue > 80000 AND prodfam.revenue < 90000
+return?view=result&as=map
+
+
+
+winbeatlog = elastic?datasource=cliponclip&index=winlogbeat_*&debug=true
+#beat = ssql?sql=select beat from winbeatlog limit 100&debug=true
+#event = ssql?sql=select event_data from winbeatlog limit 100
+return?view=winbeatlog&as=map
+
+

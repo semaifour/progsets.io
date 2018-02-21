@@ -1,0 +1,89 @@
+
+#
+# Mongo - lateral view sample with json
+#
+revenue = mongo?mongodb.database=dgmdb&mongodb.collection=FinRevenueData
+result = ssql?sql=select quarter, biz.name as bizname, subbiz.name as subbizname, prodfam.* from revenue lateral view explode(businessEntity) as biz lateral view explode(biz.subBusinessEntity) as subbiz lateral view explode(subbiz.prodFamily) as prodfam where prodfam.revenue > 80000 AND prodfam.revenue < 90000
+return?view=result&as=map
+
+
+#
+# Elastic
+#
+winbeatlog = elastic?datasource=cliponclip&index=winlogbeat_*&debug=true
+#beat = ssql?sql=select beat from winbeatlog limit 100&debug=true
+#event = ssql?sql=select event_data from winbeatlog limit 100
+return?view=winbeatlog&as=map
+
+
+#
+# JDBC
+#
+dispmysql = datasource?driver=com.mysql.jdbc.Driver&url=jdbc:mysql://diapp-nprd1-66:3666/disp&user=disp&password=disp&format=jdbc
+dispresource = ijdbc?datasource=dispmysql&dbtable=DISP_RESOURCE
+result = ssql?sql=select * from dispresource limit 10
+return?view=result&as=map
+close
+
+#
+# Grok 
+#
+cliponclip = ielastic?index=clip-on-clip_1&es.read.field.include=source,path,gl2_source_input,timestamp
+result = ssql?sql=select * from cliponclip limit 10
+resultnew = grok?view=result&column=source&pattern=%{DATA:nodeapp}-%{DATA:nodeenv}-%{GREEDYDATA:nodenum:int}&debug=true
+return?view=resultnew&as=map
+close
+
+#
+# LFT, RIGHT, JOIN
+#
+
+finBookings = mongo?mongodb.database=dgmdb&mongodb.collection=FinanceBookingsData
+finRevenue = mongo?mongodb.database=dgmdb&mongodb.collection=FinanceRevenueData
+bookings = ssql?sql=select quarter, be, sbe, bookings from finBookings
+revenue = ssql?sql=select quarter, be, subBE, revenue, grossMargin from finRevenue
+result = ssql?sql=select bookings.quarter, bookings.be, bookings.sbe, revenue.quarter as revQtr, revenue.be as revBE, revenue.subBE as revSBE, bookings.bookings, revenue.revenue, revenue.grossMargin FROM bookings, revenue WHERE revenue.quarter=bookings.quarter AND revenue.be=bookings.be AND revenue.subBE=bookings.sbe AND bookings.be='Collaboration' AND bookings.sbe='Conferencing'
+return?view=result&as=map
+close
+
+finBookings = mongo?mongodb.database=dgmdb&mongodb.collection=FinanceBookingsData
+finRevenue = mongo?mongodb.database=dgmdb&mongodb.collection=FinanceRevenueData
+bookings = ssql?sql=select quarter, be, sbe, bookings from finBookings
+revenue = ssql?sql=select quarter, be, subBE, revenue, grossMargin from finRevenue
+result = ssql?sql=select bookings.quarter, bookings.be, bookings.sbe, revenue.quarter as revQtr, revenue.be as revBE, revenue.subBE as revSBE, bookings.bookings, revenue.revenue, revenue.grossMargin FROM bookings LEFT JOIN revenue ON revenue.quarter=bookings.quarter AND revenue.be=bookings.be AND revenue.subBE=bookings.sbe AND bookings.be='Collaboration' AND bookings.sbe='Conferencing'
+return?view=result&as=map
+close
+
+finBookings = mongo?mongodb.database=dgmdb&mongodb.collection=FinanceBookingsData
+finRevenue = mongo?mongodb.database=dgmdb&mongodb.collection=FinanceRevenueData
+bookings = ssql?sql=select quarter, be, sbe, bookings from finBookings
+revenue = ssql?sql=select quarter, be, subBE, revenue, grossMargin from finRevenue
+result = ssql?sql=select bookings.quarter, bookings.be, bookings.sbe, revenue.quarter as revQtr, revenue.be as revBE, revenue.subBE as revSBE, bookings.bookings, revenue.revenue, revenue.grossMargin FROM bookings RIGHT JOIN revenue ON revenue.quarter=bookings.quarter AND revenue.be=bookings.be AND revenue.subBE=bookings.sbe AND bookings.be='Collaboration' AND bookings.sbe='Conferencing'
+return?view=result&as=map
+close
+
+#
+# mongo, elastic - join
+#
+device = ielastic?index=fsi-device-qubercloud/device&debug=true&es.nodes.wan.only=true
+device = ssql?sql=select * from device
+2gdevice = jsonpath?view=device&column=conf&$.radio2g[0].hwmode=radio2g_hwmode:string&$.radio2g[0].intrabss=radio2g_intrabss:int
+2gdevice = ssql?sql=select uid,pkid,sid,spid,radio2g_hwmode,radio2g_intrabss,conf from 2gdevice 
+site = imongo?database=facesix&collection=site
+site = ssql?sql=select * from site limit 10
+portion = imongo?database=facesix&collection=portion
+portion = ssql?sql=select * from portion limit 10
+sitedevice = ssql?sql=select site.pkid as spkid, site.uid as suid, portion.pkid as ppkid, portion.uid as puid, 2gdevice.pkid as dpkid, 2gdevice.uid as duid, 2gdevice.radio2g_hwmode,2gdevice.radio2g_intrabss,2gdevice.conf from site, portion, 2gdevice where site.pkid = portion.siteId AND portion.pkid = 2gdevice.spid
+return?view=portion,2gdevice&as=map
+close
+
+#
+#jsonify text json string and extract data
+#
+finder = ielastic?index=finder_148/message
+finder = ssql?sql=select message from finder where opcode='current-location-update' limit 1
+tags = jsonify?view=finder&column=message
+tags = ssql?sql=select uid, spid, taglist.uid as tuid, taglist.range, taglist.accuracy, taglist.coordinate.latitude, taglist.coordinate.longitude,recvlist.uid as ruid, recvlist.rssi, recvlist.distance from tags lateral view explode(tags.tag_list) as taglist lateral view explode(taglist.receiver_list) as recvlist
+result = ssql?sql=select * from tags
+return?view=result,finder&as=map&debug=true
+close

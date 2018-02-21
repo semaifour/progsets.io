@@ -1,0 +1,218 @@
+{  
+   "success":true,
+   "code":200,
+   "timestamp":1507845606097,
+   "message":"Requested operation completed successfully.",
+   "timetaken":2078,
+   "body":{  
+      "result":[  
+         {  
+            "revenuePQ":114776,
+            "revenue":89391,
+            "grossMarginPQ":77579,
+            "revenuePY":273689,
+            "grossMargin":-5251,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":187095
+         },
+         {  
+            "revenuePQ":631575,
+            "revenue":88627,
+            "grossMarginPQ":628899,
+            "revenuePY":0,
+            "grossMargin":88473,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":-95709
+         },
+         {  
+            "revenuePQ":249651,
+            "revenue":86785,
+            "grossMarginPQ":132585,
+            "revenuePY":630792,
+            "grossMargin":-45558,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":-3578510
+         },
+         {  
+            "revenuePQ":5968,
+            "revenue":88272,
+            "grossMarginPQ":-98282,
+            "revenuePY":17311,
+            "grossMargin":-45449,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":-15500
+         },
+         {  
+            "revenuePQ":67821,
+            "revenue":82713,
+            "grossMarginPQ":51219,
+            "revenuePY":143994,
+            "grossMargin":62557,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":143994
+         },
+         {  
+            "revenuePQ":-248682,
+            "revenue":89729,
+            "grossMarginPQ":-890457,
+            "revenuePY":128186,
+            "grossMargin":-300575,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":-569585
+         },
+         {  
+            "revenuePQ":95887,
+            "revenue":85521,
+            "grossMarginPQ":21018,
+            "revenuePY":626513,
+            "grossMargin":-61804,
+            "quarter":"Q1 FY2017",
+            "grossMarginPY":-1289371
+         },
+         {  
+            "revenuePQ":105797,
+            "revenue":88326,
+            "grossMarginPQ":66790,
+            "revenuePY":132167,
+            "grossMargin":57443,
+            "quarter":"Q2 FY2017",
+            "grossMarginPY":95697
+         },
+         {  
+            "revenuePQ":209028,
+            "revenue":82458,
+            "grossMarginPQ":-241319,
+            "revenuePY":0,
+            "grossMargin":67833,
+            "quarter":"Q2 FY2017",
+            "grossMarginPY":0
+         },
+         {  
+            "revenuePQ":126278,
+            "revenue":81440,
+            "grossMarginPQ":126271,
+            "revenuePY":16848,
+            "grossMargin":80906,
+            "quarter":"Q2 FY2017",
+            "grossMarginPY":16848
+         },
+         {  
+            "revenuePQ":82713,
+            "revenue":80254,
+            "grossMarginPQ":62557,
+            "revenuePY":166940,
+            "grossMargin":52851,
+            "quarter":"Q2 FY2017",
+            "grossMarginPY":166940
+         },
+         {  
+            "revenuePQ":198866,
+            "revenue":86091,
+            "grossMarginPQ":-201785,
+            "revenuePY":325990,
+            "grossMargin":-318801,
+            "quarter":"Q2 FY2017",
+            "grossMarginPY":325721
+         },
+         {  
+            "revenuePQ":223744,
+            "revenue":89131,
+            "grossMarginPQ":213997,
+            "revenuePY":273638,
+            "grossMargin":73448,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":286541
+         },
+         {  
+            "revenuePQ":17226,
+            "revenue":89318,
+            "grossMarginPQ":8185,
+            "revenuePY":586020,
+            "grossMargin":-10971,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":75222
+         },
+         {  
+            "revenuePQ":5799,
+            "revenue":80015,
+            "grossMarginPQ":-5609,
+            "revenuePY":-804,
+            "grossMargin":72515,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":2268
+         },
+         {  
+            "revenuePQ":73265,
+            "revenue":83116,
+            "grossMarginPQ":10399,
+            "revenuePY":47663,
+            "grossMargin":12221,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":33298
+         },
+         {  
+            "revenuePQ":80254,
+            "revenue":80817,
+            "grossMarginPQ":52851,
+            "revenuePY":153583,
+            "grossMargin":53050,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":150738
+         },
+         {  
+            "revenuePQ":108911,
+            "revenue":83806,
+            "grossMarginPQ":108911,
+            "revenuePY":0,
+            "grossMargin":83806,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":0
+         },
+         {  
+            "revenuePQ":53549,
+            "revenue":81980,
+            "grossMarginPQ":-283515,
+            "revenuePY":152717,
+            "grossMargin":-450868,
+            "quarter":"Q3 FY2017",
+            "grossMarginPY":119813
+         },
+         {  
+            "revenuePQ":124962,
+            "revenue":82101,
+            "grossMarginPQ":56151,
+            "revenuePY":0,
+            "grossMargin":19485,
+            "quarter":"Q4 FY2017",
+            "grossMarginPY":0
+         },
+         {  
+            "revenuePQ":21369,
+            "revenue":81019,
+            "grossMarginPQ":24759,
+            "revenuePY":0,
+            "grossMargin":79244,
+            "quarter":"Q4 FY2017",
+            "grossMarginPY":0
+         },
+         {  
+            "revenuePQ":91396,
+            "revenue":82442,
+            "grossMarginPQ":87547,
+            "revenuePY":32756,
+            "grossMargin":78588,
+            "quarter":"Q4 FY2017",
+            "grossMarginPY":32756
+         },
+         {  
+            "revenuePQ":29611,
+            "revenue":87361,
+            "grossMarginPQ":-27039,
+            "revenuePY":-69366,
+            "grossMargin":78240,
+            "quarter":"Q4 FY2017",
+            "grossMarginPY":-72676
+         }
+      ]
+   }
+}
