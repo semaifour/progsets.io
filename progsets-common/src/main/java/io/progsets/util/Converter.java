@@ -1,8 +1,8 @@
 package io.progsets.util;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -141,15 +141,15 @@ class StringConverter extends IConverter<String> {
 class DateConverter extends IConverter<Date> {
   @Override
   public Date convert(String value) throws Exception {
-    return DateFormat.getDateTimeInstance(DateFormat.SHORT,
+    return new Date(DateFormat.getDateTimeInstance(DateFormat.SHORT,
                                           DateFormat.SHORT,
-                                          Converter.locale).parse(value);
+                                          Converter.locale).parse(value).getTime());
   }
 
   @Override
   public Date convert(String value, String informat) throws Exception {
     SimpleDateFormat formatter = new SimpleDateFormat(informat, Converter.locale);
-    return formatter.parse(value);
+    return new Date(formatter.parse(value).getTime());
   }
 
 }

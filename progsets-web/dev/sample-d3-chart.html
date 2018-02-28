@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 chart</title>
+    <link rel="icon" href="">
+    <script src="/demo/js/jquery-2.1.1.js"></script>
+    <link href="/demo/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/demo/css/style.css" rel="stylesheet">
+    <link href="/demo/css/c3.css" rel="stylesheet">
+    <script src="/demo/js/d3.v3.min.js"></script>
+    <script src="/demo/js/c3.min.js"></script>
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+        body {
+            background-color: #fff;
+        }
+        .block {
+            margin-bottom: 60px;
+            margin-top: 30px;
+        }
+        .form-label {
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            min-width: 300px;
+            height: 35px;
+            padding-left: 10px;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+        <div class="block">
+            <fieldset>
+                <h4>Enter graph data here</h4>
+                <div class="form-group">
+                    <div class="form-label">Data 1</div>
+                    <input id="col1" type="text" value="30, 200, 100, 400, 150, 250">
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Data 2</div>
+                    <input id="col2" type="text" value="50, 20, 10, 40, 15, 25">
+                </div>
+                <button class="btn btn-primary" id="submit-data">Submit</button>
+            </fieldset>
+        </div>
+        <fieldset>
+            <h4>Generated graph</h4>
+            <div id="chart"></div>
+        </fieldset>
+    </div>
+</body>
+<script>
+      $(document).ready(function () {
+        function render() {
+            var col1 = $("#col1").val();
+            var col2 = $("#col2").val();
+            var columndata = [];
+            
+            col1 = col1.split(",");
+            for (a in col1 ) {
+                col1[a] = parseInt(col1[a], 10); // Explicitly include base as per Álvaro's comment
+            }
+            col1.unshift("Data 1");
+            columndata.push(col1);
+
+            col2 = col2.split(",");
+            for (a in col2 ) {
+                col2[a] = parseInt(col2[a], 10); // Explicitly include base as per Álvaro's comment
+            }
+            col2.unshift("Data 2");
+            columndata.push(col2);
+
+            var chart = c3.generate({
+                bindto: '#chart',
+                data: {
+                  columns: columndata
+                }
+            });
+        }
+
+        render();
+
+        $(document).on("click","#submit-data",function() {
+            render();
+        });
+      });
+    </script>
+</html>

@@ -5,9 +5,11 @@ import java.util.Map;
 
 import io.progsets.proc.impl.CassandraInputProc;
 import io.progsets.proc.impl.CloseProcontext;
+import io.progsets.proc.impl.ConvertProc;
 import io.progsets.proc.impl.DatasourceProc;
 import io.progsets.proc.impl.DescribeView;
 import io.progsets.proc.impl.ElasticInputProc;
+import io.progsets.proc.impl.FileInputProc;
 import io.progsets.proc.impl.GrokProc;
 import io.progsets.proc.impl.JdbcInputProc;
 import io.progsets.proc.impl.JsonifyProc;
@@ -33,6 +35,8 @@ public class ProcedureFactory {
 		proclassmap.put("ielastic", ElasticInputProc.class);
 		proclassmap.put("isolr", SolrInputProc.class);
 		proclassmap.put("ijdbc", JdbcInputProc.class);
+		proclassmap.put("ifile", FileInputProc.class);
+		proclassmap.put("convert", ConvertProc.class);
 		proclassmap.put("jsonify", JsonifyProc.class);
 		proclassmap.put("jsonpath", JsonPathProc.class);
 		proclassmap.put("grok", GrokProc.class);

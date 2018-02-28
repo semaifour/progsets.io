@@ -1,0 +1,39 @@
+queries list
+edit, execute and delete
+
+url
+/query?list
+
+steps
+add new query
+show data in grid
+show buttons below grid save query and create visual
+
+visuals list
+view and delete
+
+create visual steps
+choose type line, bar, pie and table
+show drag and drop columns in x and y axis
+preview chart
+save visual
+
+dashboards list
+create new dashboard
+view and delete
+
+able to share unique urls for visuals and dashboards
+
+old - new tabs
+create - query
+charts - visualize
+dashboards - dashboards
+
+steps representation change
+query - visualize - dashboard - share
+
+save complete definition instead of reference for visuals in dashboard
+
+2798 El Camino Real,
+Santa Clara, CA 95051
+408-247-9264

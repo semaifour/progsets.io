@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+<script>
+    var list = ['one','two','three'];
+    var x = 0;
+    var loopArray = function(arr) {
+        customAlert(arr[x],function(){
+            // set x to next item
+            x++;
+
+            // any more items in array? continue loop
+            if(x < arr.length) {
+                loopArray(arr);   
+            }
+        }); 
+    }
+
+    function customAlert(msg,callback) {
+        // code to show your custom alert
+        // in this case its just a console log
+        console.log(msg);
+
+        // do callback when ready
+        callback();
+    }
+
+    // start 'loop'
+    loopArray(list);
+</script>
+</body>
+</html>

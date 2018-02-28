@@ -1,0 +1,7 @@
+finder = ielastic?index=finder_148/message
+finder = ssql?sql=select message from finder where opcode='current-location-update' limit 1
+tags = jsonify?view=finder&column=message
+tags = ssql?sql=select uid, spid, taglist.uid as tuid, taglist.range, taglist.accuracy, taglist.coordinate.latitude, taglist.coordinate.longitude,recvlist.uid as ruid, recvlist.rssi, recvlist.distance from tags lateral view explode(tags.tag_list) as taglist lateral view explode(taglist.receiver_list) as recvlist
+result = ssql?sql=select * from tags
+return?view=result&as=maps&debug=true
+close

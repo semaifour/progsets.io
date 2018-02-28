@@ -9,6 +9,8 @@ Repository consists of three maven projects namely
 * progesets-spark  -- apache spark based input/output/transform procedures
 * progsets-psql    -- spring boot based REST service to submit 'PSQL'/'PLPSQL' statements. 
 * progsets-zeppelin -- Remote Zeppelin Interpreter for visualizations in zeppelin
+* progsets-web - Web console for discover, test and manage saved queries.
+
 ## Version
 *  0.0.1 - matsya the fish
 

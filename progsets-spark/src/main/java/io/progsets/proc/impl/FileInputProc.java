@@ -42,7 +42,7 @@ public class FileInputProc extends Procedure {
 		try {
 			assertNotNullParams("saveas");
 			final Map<String, String> viewparams = settings(pc);
-			viewparams.putAll(paramap("file.", false, ""));
+			viewparams.putAll(paramap("file.", true, ""));
 			Dataset<Row> resultset = null;
 
 			if (isparam("file.split")) {
@@ -81,7 +81,7 @@ public class FileInputProc extends Procedure {
 							continue;
 						}
 					}
-					rowvalues = Arrays.asList(srec.split(param("file.split", ",")));
+					rowvalues = Arrays.asList(trim(srec.split(param("file.split", ","))));
 					resultrows.add(RowFactory.create(rowvalues.toArray()));
 				}
 				resultset = pc.ss().createDataFrame(pc.jsc().parallelize(resultrows), newschema);
@@ -99,6 +99,25 @@ public class FileInputProc extends Procedure {
 		return pc;
 	}
 	
+	private String[] trim(String[] values) {
+		String[] result = new String[values.length];
+		for(int i = 0; i < values.length; i++) {
+			result[i] = trim(values[i]);
+		}
+		return result;
+	}
+
+	private String trim(String val) {
+		val = val.trim();
+		if (val.startsWith("\"")) {
+			val = val.substring(1);
+		}
+		if (val.endsWith("\"")) {
+			val = val.substring(0, val.indexOf("\""));
+		}
+		return val;
+	}
+
 	/**
 	 * Returns default settings for the procedures + resolved datasource settings
 	 */
