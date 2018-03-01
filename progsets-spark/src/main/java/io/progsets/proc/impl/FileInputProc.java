@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.spark.api.java.JavaRDD;
@@ -23,7 +21,7 @@ import io.progsets.proc.util.SchemaUtil;
 
 /**
  * 
- * myviewname = ifile?datasource=myDSname&file.path=http://s3/myfile.csv&file.split=,|\t&file.hasheader=ture&file.columns=f1:int,f2:string,f2:boolean
+ * myviewname = ifile?datasource=myDSname&file.path=http://s3/myfile.csv&file.split=true|yes|false|now&file.delimiter=,|\t&file.hasheader=ture&file.columns=f1:int,f2:string,f2:boolean
  * 
  * OR 
  * 
@@ -44,36 +42,36 @@ public class FileInputProc extends Procedure {
 			final Map<String, String> viewparams = settings(pc);
 			viewparams.putAll(paramap("file.", true, ""));
 			Dataset<Row> resultset = null;
-
+			//if file.split=true|false|yes|no
 			if (isparam("file.split")) {
-				JavaRDD<String> jrdd = pc.ss().read()
-						  							.textFile(viewparams.get("path"))
-						  							.javaRDD();
+				JavaRDD<String> jrdd = pc.ss().read().textFile(viewparams.get("path")).javaRDD();
 				StructType newschema = null;
 				ArrayList<StructField> tfields = new ArrayList<StructField>();
-
-				List<String> rowvalues = null;
+				String[] fileFields = null;
+				List<Object> rowvalues = null;
 				List<Row> resultrows = new ArrayList<Row>();
-				if (newschema == null) {
-					String[] nfd = null;
-					if (isparam("file.columns")) {
-						String[] fields = param("file.columns").split(",");
-						for(String entry : fields) {
-							nfd = entry.split(":");
-							tfields.add(DataTypes.createStructField(nfd[0], SchemaUtil.getDatatypeByName(nfd.length > 1 ? nfd[1] : "string") , true)); 
-						}
-						newschema = DataTypes.createStructType(tfields.toArray(new StructField[tfields.size()]));
+				//build new schema if file.columns provided
+				String[] nfd = null;
+				if (isparam("file.columns")) {
+					fileFields = param("file.columns").split(",");
+					for(String entry : fileFields) {
+						nfd = entry.split(":");
+						tfields.add(DataTypes.createStructField(nfd[0], SchemaUtil.getDatatypeByName(nfd.length > 1 ? nfd[1] : "string") , true)); 
 					}
+					newschema = DataTypes.createStructType(tfields.toArray(new StructField[tfields.size()]));
 				}
-				boolean skipped = false;
+				//iterate data row, skip if first row is file.hasheader=true
+				boolean shouldskipfirst = false;
+				Boolean shouldsplitrec = isparam("file.split", "true", "yes");
+				
 				for (String srec : jrdd.collect()) {
-					if (!skipped) {
-						skipped = true;
+					if (!shouldskipfirst) {
+						shouldskipfirst = true;
 						if (isparam("file.hasheader", "true", "yes")) {
 							//if first row is header and newschema is not built because file.columns == null
 							//build default columns
 							if (newschema == null) {
-								for(String entry : srec.split(param("file.split", ","))) {
+								for(String entry : srec.split(",")) {
 									tfields.add(DataTypes.createStructField(entry, SchemaUtil.getDatatypeByName("string") , true)); 
 								}
 								newschema = DataTypes.createStructType(tfields.toArray(new StructField[tfields.size()]));
@@ -81,7 +79,11 @@ public class FileInputProc extends Procedure {
 							continue;
 						}
 					}
-					rowvalues = Arrays.asList(trim(srec.split(param("file.split", ","))));
+					if (shouldsplitrec) {
+						rowvalues = Arrays.asList(trim(srec.split(param("file.delimiter", ","))));
+					} else {
+						rowvalues = Arrays.asList(srec);
+					}
 					resultrows.add(RowFactory.create(rowvalues.toArray()));
 				}
 				resultset = pc.ss().createDataFrame(pc.jsc().parallelize(resultrows), newschema);
@@ -99,15 +101,15 @@ public class FileInputProc extends Procedure {
 		return pc;
 	}
 	
-	private String[] trim(String[] values) {
-		String[] result = new String[values.length];
+	private Object[] trim(String[] values) {
+		Object[] result = new Object[values.length];
 		for(int i = 0; i < values.length; i++) {
 			result[i] = trim(values[i]);
 		}
 		return result;
 	}
 
-	private String trim(String val) {
+	private Object trim(String val) {
 		val = val.trim();
 		if (val.startsWith("\"")) {
 			val = val.substring(1);
