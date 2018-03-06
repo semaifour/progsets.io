@@ -36,12 +36,26 @@ Here,
 
 
 ## How to run & test?
-*	$curl -XPOST  
+* $curl -XPOST  
 		  -H "Authorization: Basic admin:admin123"
 		  -H"Content-Type:text/psql" 
-		  -d"myview = imongo?uri=mongodb://host:port&database=mymongogb&collection=user|return?view=myview&as=map" 
-		  http://localhost:8175/procesets/rest/psql/exe
-	
+		  http://localhost:8175/progesets/rest/psql/exe
+		  
+* PSQL Script as Body of POST Request	
+
+credit = ifile?file.path=file:///Users/megandran/Downloads/MyTestData.csv&file.split=true&file.hasheader=true&file.columns=Date:string,Transdate:string,Ref:string,Description:string,Amount:string,Balance:string
+credit = convert?view=credit&columns=Date:date:mm/dd/yyyy,Transdate:date:mm/dd/yyyy,Ref:string,Description:string,Amount:double,Balance:double
+result = ssql?sql=select sum(Amount) as Amount from credit
+return?view=result&as=maps&debug=true
+close
+
+## Install and Integrate with Zeppelin
+* Install Apache Zeppelin
+* Copy progsets-zeppelin-xxx.jar to Zeppelin lib folder
+* Add Remote Interpreter in Zeppeling UI (group name: progsets, interpter name: progsets, Hostname: localhost, Port: 8176)
+* Invoke interpreter '%progsets' and supply PSQL query
+*
+
 ### Contribution guidelines ###
 
 * Writing tests

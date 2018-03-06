@@ -20,6 +20,8 @@ import io.progsets.util.Converter;
 
 /**
  * 
+ * Converts the given view's schema and data as specified.
+ * 
  * myviewname = convert?view=myviewname&columns=f1:int,f2:string,f2:boolean
  * 
  * @author mjs

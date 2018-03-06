@@ -47,7 +47,7 @@ public class PsqlInterpreter extends Interpreter {
 
 	@Override
 	public FormType getFormType() {
-		return FormType.SIMPLE;
+		return FormType.NONE;
 	}
 
 	@Override
@@ -109,6 +109,7 @@ public class PsqlInterpreter extends Interpreter {
 		request = Unirest.post(super.getProperty(PROGSETS_URL) + "/rest/psql/exe?return.as=sheet");
 		request.header("Accepts", "application/json")
 				.header("Authorization", super.getProperty(PROGSETS_AUTH))
+				.header("Content-Type", "text/psql")
 				.body(cmd).getHttpRequest();
 		return request;
 	}
@@ -116,7 +117,7 @@ public class PsqlInterpreter extends Interpreter {
 
 	public static void main(String[] args) throws UnirestException {
 		Properties prop = new Properties();
-		prop.put("progsets.url", "http://localhost:8174/progsets");
+		prop.put("progsets.url", "http://localhost:8175/progsets");
 		prop.put("progsets.auth", "Basic admin:admin123");
 		
 		PsqlInterpreter psqli = new PsqlInterpreter(prop);

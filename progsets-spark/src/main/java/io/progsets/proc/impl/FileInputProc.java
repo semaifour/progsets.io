@@ -21,6 +21,8 @@ import io.progsets.proc.util.SchemaUtil;
 
 /**
  * 
+ * Loads a text file into a view and optionally splits each line (for ex CSV) and constructs a data-grid as specified.
+ * 
  * myviewname = ifile?datasource=myDSname&file.path=http://s3/myfile.csv&file.split=true|yes|false|now&file.delimiter=,|\t&file.hasheader=ture&file.columns=f1:int,f2:string,f2:boolean
  * 
  * OR 
