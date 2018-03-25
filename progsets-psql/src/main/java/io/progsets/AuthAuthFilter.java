@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import io.progsets.common.Appproperties;
-import io.progsets.config.entity.Entity;
-import io.progsets.config.entity.EntityService;
 import io.progsets.util.Cryptor;
 
 /**
@@ -38,9 +36,6 @@ public class AuthAuthFilter implements Filter {
 	Appproperties applicationProperties;
 
 	@Autowired
-	EntityService entityservice;
-
-	@Autowired
 	Cryptor cryptor;
 
 	@Override
@@ -50,11 +45,13 @@ public class AuthAuthFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String uri = request.getRequestURI().trim();
+		String login = null, pwd = null;
+
 		if (uri.contains("/rest/") || uri.contains("/web/")) {
 			// if it's restricted
 			HttpSession session = request.getSession();
 			boolean authed = false;
-
+			
 			if (session.isNew() || session.getAttribute("user") == null) {
 				// check if header has auth tokens
 				String auth = request.getHeader("Authorization");
@@ -63,23 +60,26 @@ public class AuthAuthFilter implements Filter {
 					auth = tokens[1];
 					// auth = Base64.decodeToString(auth);
 					tokens = auth.split(":");
-					String login = tokens[0];
-					String pwd = tokens[1];
+					login = tokens[0];
+					pwd = tokens[1];
 					// do login using appid and secret
 					try {
 						if (System.getProperty("ps.auth") != null) {
 							authed = System.getProperty("ps.auth").equals(auth);
 						}
 						if (!authed) {
-							Entity entity = entityservice.findByName(login, "authorization");
-							authed = pwd != null ? pwd.equals(entity.getContent()) : false;
+							String creds = applicationProperties.prop("progsets.auth", "");
+							authed = auth.equals(creds);
 						}
 					} catch (Exception e) {
 						LOG.error("Auth - decrytor error ", e);
 						authed = false;
 					}
 				}
-				if (!authed) {
+				
+				if (authed) {
+					session.setAttribute("login", login);
+				} else {
 					if (uri.contains("/rest/")) {
 						response.setHeader("WWW-Authenticate", "Basic realm=progsets");
 						response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization Denied. Contact Admin");
@@ -94,7 +94,7 @@ public class AuthAuthFilter implements Filter {
 			} else {
 				// check if ORG_REQUEST_URI is found,if so, redirect to it
 				// to take user to the org url which was sent to log-in page
-
+				login = String.valueOf(session.getAttribute("login"));
 				if (!uri.contains("/rest/") && session.getAttribute("ORG_REQUEST_URI") != null
 						&& Boolean.getBoolean(request.getParameter("iourl")) == false) {
 					uri = (String) session.getAttribute("ORG_REQUEST_URI");
@@ -103,6 +103,7 @@ public class AuthAuthFilter implements Filter {
 				}
 			}
 		}
+		LOG.info("[" + login + "] [" + request.getMethod() + "] :" + request.getRequestURI());
 		chain.doFilter(request, response);
 	}
 

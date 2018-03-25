@@ -7,9 +7,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.progsets.common.PSQL;
 import io.progsets.common.Restponse;
-import io.progsets.config.entity.Entity;
-import io.progsets.config.entity.EntityService;
 import io.progsets.proc.Procedure;
 import io.progsets.proc.Procontext;
 import io.progsets.util.SimpleCache;
@@ -30,12 +26,9 @@ public class PSQLRestController extends BaseController {
 	
 	private SimpleCache<Procontext> procontextCache = new SimpleCache<Procontext>("procontextCache", 4*60*60*1000);
 	
-	@Autowired
-	EntityService entityservice;
-	
 
 	/**
-	 * Restful end-point for GET: rest/psql/exe/{savedquery} to execute a saved query
+	 * Restful end-point for GET: rest/psql/exe to execute a saved query
 	 * 
 	 * @param request
 	 * @param response
@@ -43,16 +36,11 @@ public class PSQLRestController extends BaseController {
 	 * @param exeid		- execution id to track spark jobs
 	 * @return
 	 */
-	@GetMapping(value="/exe/{savedquery}", produces = "application/json")
+	@GetMapping(value="/exe", produces = "application/json")
 	public Restponse<Object> exeget(HttpServletRequest request,
 								 HttpServletResponse response,
-								 @PathVariable String savedquery,
+								 @RequestParam String psql,
 								 @RequestParam(value="exeid", required=false) String exeid) {
-		Entity entity = entityservice.findByName(savedquery, "query");
-		String psql = entity.getContent();
-		Map<String, String> params = getOverrides(request);
-		psql = params.entrySet().stream().reduce(psql, (s, e) -> s.replaceAll("\\{" + e.getKey() + "\\}", e.getValue()), (s, s2) -> s);
-		LOG.info("Executing saved query:" + savedquery + "| PSQL :" + psql);
 		return exe(request, response, psql, exeid);
 	}
 	
@@ -69,7 +57,7 @@ public class PSQLRestController extends BaseController {
 	public Restponse<Object> exepost(HttpServletRequest request,
 								 HttpServletResponse response,
 								 @RequestBody String psql,
-								 @RequestParam(value="id", required=false) String exeid) {
+								 @RequestParam(value="exeid", required=false) String exeid) {
 		return exe(request, response, psql, exeid);
 	}
 	

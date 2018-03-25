@@ -36,24 +36,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.flapdoodle.embed</groupId>
-			<artifactId>de.flapdoodle.embed.mongo</artifactId>
-			</dependency>
-		<dependency>
-			<groupId>cz.jirutka.spring</groupId>
-			<artifactId>embedmongo-spring</artifactId>
-			<version>RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
@@ -88,7 +70,6 @@
 			<version>2.1.1</version> <exclusions> <exclusion> <groupId>org.slf4j</groupId> 
 			<artifactId>slf4j-log4j12</artifactId> </exclusion> <exclusion> <groupId>log4j</groupId> 
 			<artifactId>log4j</artifactId> </exclusion> </exclusions> </dependency> -->
-
 
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
