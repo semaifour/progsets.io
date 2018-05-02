@@ -24,7 +24,7 @@ public class PsqlInterpreter extends Interpreter {
 	
 	public static final String PROGSETS_URL = "progsets.url";
 	public static final String PROGSETS_AUTH = "progsets.auth";
-	
+
 	public PsqlInterpreter(Properties property) {
 		super(property);
 	}
@@ -63,9 +63,9 @@ public class PsqlInterpreter extends Interpreter {
 			      return new InterpreterResult(InterpreterResult.Code.SUCCESS);
 			}
 			return invoke(code, interpreterContext);
-		} catch (UnirestException e) {
+		} catch (Exception e) {
 			LOGGER.error("Error running PSQL", e);
-			return new InterpreterResult(InterpreterResult.Code.ERROR);
+			return new InterpreterResult(InterpreterResult.Code.ERROR, InterpreterResult.Type.TEXT, e.toString());
 		}
 	}
 	
@@ -77,29 +77,32 @@ public class PsqlInterpreter extends Interpreter {
 	
 	protected InterpreterResult invoke(String cmd, InterpreterContext interpreterContext) throws UnirestException {
 		String data = null;
-
-		HttpRequest request = prepareUriRestRequest(cmd, interpreterContext);
-
-		HttpResponse<JsonNode> result = request.asJson();
-		if (result.getStatus() >= 200 && result.getStatus() <= 300) {
-			JSONObject response = result.getBody() != null ? result.getBody().getObject() : null;
-			if (response.getBoolean("success")) {
-				JSONArray resultlist = response.getJSONArray("body");
-				JSONObject table0 = resultlist.getJSONObject(0);
-				data = table0.getString("data");
-				addAngularObject(interpreterContext, "progsets", data); //TODO: find why to do this
-				return new InterpreterResult(InterpreterResult.Code.SUCCESS,
-			        					 InterpreterResult.Type.TABLE,
-			        					 data);
+		try {
+			HttpRequest request = prepareUriRestRequest(cmd, interpreterContext);
+			HttpResponse<JsonNode> result = request.asJson();
+			if (result.getStatus() >= 200 && result.getStatus() <= 300) {
+				JSONObject response = result.getBody() != null ? result.getBody().getObject() : null;
+				if (response.getBoolean("success")) {
+					JSONArray resultlist = response.getJSONArray("body");
+					JSONObject table0 = resultlist.getJSONObject(0);
+					data = table0.getString("data");
+					addAngularObject(interpreterContext, "progsets", data); //TODO: find why to do this
+					return new InterpreterResult(InterpreterResult.Code.SUCCESS,
+				        					 InterpreterResult.Type.TABLE,
+				        					 data);
+				} else {
+					data = response.getString("message");
+					addAngularObject(interpreterContext, "progsets", data); //TODO: find why to do this
+					return new InterpreterResult(InterpreterResult.Code.ERROR,
+	   					 InterpreterResult.Type.TEXT,
+	   					 response.getString("message"));
+				}
 			} else {
-				data = response.getString("message");
-				addAngularObject(interpreterContext, "progsets", data); //TODO: find why to do this
-				return new InterpreterResult(InterpreterResult.Code.ERROR,
-   					 InterpreterResult.Type.TEXT,
-   					 response.getString("message"));
+				throw new UnirestException("Progsets REST invocation Error Code :" + result.getStatus() + ", Text :" + result.getStatusText());
 			}
-		} else {
-			throw new UnirestException("Error Code :" + result.getStatus() + ", Text :" + result.getStatusText());
+		} catch (Exception e) {
+			return new InterpreterResult(InterpreterResult.Code.ERROR,
+  					 InterpreterResult.Type.TEXT, e.toString());
 		}
 
 	}

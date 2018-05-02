@@ -11,16 +11,12 @@
 	<description>data set procedures</description>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
 		<spark.version>2.2.0</spark.version>
 		<spark.scala.binary.version>2.11</spark.scala.binary.version>
 		<scala.version>2.11.11</scala.version>
 		<spark.elasticsearch.version>5.6.4</spark.elasticsearch.version>
 		<spark.mongodb.version>2.2.0</spark.mongodb.version>
-		<spark.solr.version>3.0.1</spark.solr.version>
-		<solr.solrj.version>6.5.1</solr.solrj.version>
+		<spark.solr.version>3.4.4</spark.solr.version>
 	</properties>
 
 	<dependencies>
@@ -90,6 +86,7 @@
 			<groupId>com.lucidworks.spark</groupId>
 			<artifactId>spark-solr</artifactId>
 			<version>${spark.solr.version}</version>
+			<!--  
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
@@ -100,11 +97,7 @@
 					<artifactId>asm</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>${solr.solrj.version}</version>
+			-->
 		</dependency>
 		<dependency>
 			<groupId>com.datastax.spark</groupId>
@@ -155,14 +148,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>cloudera.repo</id>
-			<url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
-			<name>Cloudera Repositories</name>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 </project>
