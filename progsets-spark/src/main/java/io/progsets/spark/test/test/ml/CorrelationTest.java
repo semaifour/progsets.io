@@ -3,8 +3,6 @@ package io.progsets.spark.test.test.ml;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.ml.linalg.VectorUDT;
 import org.apache.spark.ml.linalg.Vectors;
@@ -20,8 +18,6 @@ import org.apache.spark.sql.types.StructType;
 public class CorrelationTest {
 
 	public static void main(String[] args) {
-		Logger.getLogger("org").setLevel(Level.OFF);
-		Logger.getLogger("akka").setLevel(Level.OFF);
 		
 		List<Row> data = Arrays.asList(
 				RowFactory.create(Vectors.sparse(4, new int[] { 0, 3 }, new double[] { 1.0, -2.0 })),
@@ -39,8 +35,6 @@ public class CorrelationTest {
 				  .getOrCreate();
 		
 		spark.sparkContext().setLogLevel("OFF");
-		Logger.getLogger("org").setLevel(Level.OFF);
-		Logger.getLogger("akka").setLevel(Level.OFF);
 	
 
 		Dataset<Row> df = spark.createDataFrame(data, schema);
